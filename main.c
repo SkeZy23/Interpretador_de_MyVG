@@ -11,17 +11,17 @@ void desenharPontos(char imagem[][], int x, int y){
 }
 
 void desenharLinha(char imagem[][], int x1, int y1, int x2, int y2){
-    /*Rodrigo*/
+    /*Afonso*/
 }
 
 void desenharRetangulo(char imagem[][], int x1, int y1, int x2, int y2){
-    /*Afonso*/
+    /*Rodrigo*/
 }
 
 void guardarImagem(char imagem[][], int largura, int altura, const char* nomeFicheiro){
-    /*Afonso*/
+    /*António*/
 }
 
 int main(){
-    /*António*/
+    /*Afonso*/
 }
