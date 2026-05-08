@@ -3,7 +3,7 @@
 #include <string.h>
 
 void iniciarImagem(char imagem[][], int largura, int altura){
-    /*Rodrigo*/
+    /*Rodrigo*/ int x;
 }
 
 void desenharPontos(char imagem[][], int x, int y){
