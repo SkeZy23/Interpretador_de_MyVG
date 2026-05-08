@@ -23,17 +23,21 @@ void desenharPontos(struct Imagens* img, int x, int y){
 }
 
 void desenharLinha(struct Imagens* img, int x1, int y1, int x2, int y2){
-    /*Afonso*/
-}
-
-void desenharRetangulo(struct Imagens* img, int x1, int y1, int x2, int y2){
     /*Rodrigo*/
 }
 
-void guardarImagem(struct Imagens* img, int largura, int altura, const char* nomeFicheiro){
+void desenharRetangulo(struct Imagens* img, int x1, int y1, int x2, int y2){
     /*António*/
+    desenharLinha(img, x1, y1, x2, y1);
+    desenharLinha(img, x1, y2, x2, y2);
+    desenharLinha(img, x1, y1, x1, y2);
+    desenharLinha(img, x2, y1, x2, y2);
+}
+
+void guardarImagem(struct Imagens* img, int largura, int altura, const char* nomeFicheiro){
+    /*Rodrigo*/
 }
 
 int main(){
-    /*Afonso*/
+    /*António*/
 }
