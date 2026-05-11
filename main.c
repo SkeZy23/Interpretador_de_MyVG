@@ -30,10 +30,9 @@ void iniciarImagem(struct Imagens *img, int largura, int altura)
 void desenharPontos(struct Imagens *img, int x, int y)
 {
     /*António*/
-    img->imagem;
     if (x >= 0 && x < img->largura && y >= 0 && y < img->altura)
     {
-        img->imagem[y][x] = '#';
+        img->imagem[y][x] = '*';
     }
 }
 
@@ -144,3 +143,6 @@ int main(){
             desenharRetangulo(&img, x1, y1, x2, y2);
         }
     }
+    guardarImagem(&img, largura, altura, "output.txt");
+    return 0;
+}
