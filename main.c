@@ -131,7 +131,7 @@ int main(){
     }
 
     int largura, altura;
-    
+
     if(fscanf(ficheiro, "%d %d", &largura, &altura) != 2)
     {
         printf("Erro ao ler as dimensões da imagem.\n");
