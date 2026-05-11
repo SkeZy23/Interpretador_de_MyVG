@@ -1,3 +1,6 @@
+/*Este trabalho foi integralmente
+realizado pelos alunos Rodrigo Lopes e António Santos sem recurso a ferramentas de inteligência artificial*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,11 +47,11 @@ int main(){
     printf("Qual o nome do ficheiro em MyVG? ");
     char nomeFicheiro[100];
     scanf("%s", nomeFicheiro);
-    // quero ler o ficheiro e agarrar nos primeiros 2 numeros para a largura e altura da imagem
+
     int largura, altura;
     fscanf(fopen(nomeFicheiro, "r"), "%d %d", &largura, &altura);
     iniciarImagem(&img, largura, altura);
-    // quero ler o resto do ficheiro e desenhar os pontos, linhas e retângulos
+
     char tipoDesenho[20];
     while(fscanf(fopen(nomeFicheiro, "r"), "%s", tipoDesenho) != EOF) {
         if(strcmp(tipoDesenho, "p") == 0) {
