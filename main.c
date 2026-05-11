@@ -12,6 +12,14 @@ struct Imagens
 
 void iniciarImagem(struct Imagens* img, int largura, int altura){
     /*Rodrigo*/
+int x,y;
+img->largura = largura;
+img->altura = altura;
+for(y = 0; y < altura; y++){
+for(x = 0; x < largura; x++){
+img->imagem[y][x] = ' ';
+}
+} 
 }
 
 void desenharPontos(struct Imagens* img, int x, int y){
@@ -24,6 +32,41 @@ void desenharPontos(struct Imagens* img, int x, int y){
 
 void desenharLinha(struct Imagens* img, int x1, int y1, int x2, int y2){
     /*Rodrigo*/
+int dx=abs(x2-x1);
+int dy=abs(y2-y1);
+int sx,sy;
+if(x1 <x2){
+sx=1;
+}
+else{
+sx=-1;
+}
+if(y1 <y2){
+sy=1;
+}
+else{
+sy= -1;
+}
+
+int e=dx + dy;
+while(1){
+desenharPontos(img,x1,y1);
+int e2= e + e;
+if(e2>=dy){
+if(x1==x2){
+break;
+}
+e= e + dy;
+x1= x1 + sx;
+}
+if(e2<=dx){
+if(y1==y2){
+break;
+}
+e= e + dx;
+y1= y1 + sy;
+}
+}
 }
 
 void desenharRetangulo(struct Imagens* img, int x1, int y1, int x2, int y2){
@@ -36,6 +79,15 @@ void desenharRetangulo(struct Imagens* img, int x1, int y1, int x2, int y2){
 
 void guardarImagem(struct Imagens* img, int largura, int altura, const char* nomeFicheiro){
     /*Rodrigo*/
+FILE *ficheiro = fopen(nomeFicheiro, "w");
+for(y =0; y < altura; y++){
+for(x = 0; x < largura; x++){
+fprintf(ficheiro, "%c",img->imagem[y][x]);
+}
+fprintf(ficheiro,"\n");
+}
+fclose(ficheiro);
+
 }
 
 int main(){
