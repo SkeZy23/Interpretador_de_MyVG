@@ -117,6 +117,16 @@ void guardarImagem(struct Imagens *img, int largura, int altura, const char *nom
     fclose(ficheiro);
 }
 
+// Funções Opcionais
+
+void desenharPoligono(struct Imagens *img, int xs[], int ys[], int n){
+    //António
+}
+
+void inserirImagem(struct Imagens *img, int xInicio, int yInicio, const char nomeFicheiro[]){
+    //Rodrigo
+}
+
 int main(){
     /*António*/
     struct Imagens img;
@@ -131,7 +141,6 @@ int main(){
     }
 
     int largura, altura;
-
     if(fscanf(ficheiro, "%d %d", &largura, &altura) != 2)
     {
         printf("Erro ao ler as dimensões da imagem.\n");
@@ -147,22 +156,20 @@ int main(){
     iniciarImagem(&img, largura, altura);
 
     char tipoDesenho[20];
+
     while (fscanf(ficheiro, "%s", tipoDesenho) != EOF)
     {
-        if (strcmp(tipoDesenho, "p") == 0)
-        {
+        if (strcmp(tipoDesenho, "p") == 0){
             int x, y;
             fscanf(ficheiro, "%d %d", &x, &y);
             desenharPontos(&img, x, y);
         }
-        else if (strcmp(tipoDesenho, "l") == 0)
-        {
+        else if (strcmp(tipoDesenho, "l") == 0){
             int x1, y1, x2, y2;
             fscanf(ficheiro, "%d %d %d %d", &x1, &y1, &x2, &y2);
             desenharLinha(&img, x1, y1, x2, y2);
         }
-        else if (strcmp(tipoDesenho, "r") == 0)
-        {
+        else if (strcmp(tipoDesenho, "r") == 0){
             int x1, y1, x2, y2;
             fscanf(ficheiro, "%d %d %d %d", &x1, &y1, &x2, &y2);
             desenharRetangulo(&img, x1, y1, x2, y2);
