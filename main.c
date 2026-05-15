@@ -125,6 +125,26 @@ void desenharPoligono(struct Imagens *img, int xs[], int ys[], int n){
 
 void inserirImagem(struct Imagens *img, int xInicio, int yInicio, const char nomeFicheiro[]){
     //Rodrigo
+FILE *ficheiro = fopen(nomeFicheiro, "r");
+if (ficheiro == NULL){
+return;
+}
+int xActual = xInicio;
+int yActual = yInicio;
+int c;
+while((c = fgetc(ficheiro)) != EOF){
+if (c == '\n'){
+yActual++;
+xActual = xInicio;
+}
+else{
+if (xActual >= 0 && xActual < img->largura && yActual >= 0 && yActual < img->altura){
+img->imagem[yActual][xActual] = c;
+}
+xActual++;
+}
+}
+fclose(ficheiro);
 }
 
 int main(){
