@@ -1,5 +1,3 @@
 #isto é para ignorar 
 10 10 #isto também
-p 0 0
-r 7 7 9 9
-l 0 9 9 0
+z 1 1 8 1 4 6

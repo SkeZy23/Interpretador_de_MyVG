@@ -121,81 +121,197 @@ void guardarImagem(struct Imagens *img, int largura, int altura, const char *nom
 
 void desenharPoligono(struct Imagens *img, int xs[], int ys[], int n){
     //António
+    int i;
+
+    if (n < 2)
+    {
+        return;
+    }
+
+    for (i = 0; i < n - 1; i++)
+    {
+        desenharLinha(img, xs[i], ys[i], xs[i + 1], ys[i + 1]);
+    }
+
+    desenharLinha(img, xs[n - 1], ys[n - 1], xs[0], ys[0]);
 }
 
-void inserirImagem(struct Imagens *img, int xInicio, int yInicio, const char nomeFicheiro[]){
-    //Rodrigo
-FILE *ficheiro = fopen(nomeFicheiro, "r");
-if (ficheiro == NULL){
-return;
-}
-int xActual = xInicio;
-int yActual = yInicio;
-int c;
-while((c = fgetc(ficheiro)) != EOF){
-if (c == '\n'){
-yActual++;
-xActual = xInicio;
-}
-else{
-if (xActual >= 0 && xActual < img->largura && yActual >= 0 && yActual < img->altura){
-img->imagem[yActual][xActual] = c;
-}
-xActual++;
-}
-}
-fclose(ficheiro);
-}
-
-int main(){
-    /*António*/
-    struct Imagens img;
-    printf("Qual o nome do ficheiro em MyVG? ");
-    char nomeFicheiro[100];
-    scanf("%s", nomeFicheiro);
+void inserirImagem(struct Imagens *img, int xInicio, int yInicio, const char nomeFicheiro[])
+{
+    // Rodrigo
     FILE *ficheiro = fopen(nomeFicheiro, "r");
+    if (ficheiro == NULL)
+    {
+        return;
+    }
+    int xActual = xInicio;
+    int yActual = yInicio;
+    int c;
+    while ((c = fgetc(ficheiro)) != EOF)
+    {
+        if (c == '\n')
+        {
+            yActual++;
+            xActual = xInicio;
+        }
+        else
+        {
+            if (xActual >= 0 && xActual < img->largura && yActual >= 0 && yActual < img->altura)
+            {
+                img->imagem[yActual][xActual] = c;
+            }
+            xActual++;
+        }
+    }
+    fclose(ficheiro);
+}
+
+int main()
+{
+    struct Imagens img;
+    char nomeFicheiro[100];
+    FILE *ficheiro;
+    char linha[256];
+    int largura = 0, altura = 0;
+
+    printf("Qual o nome do ficheiro em MyVG? ");
+    scanf("%99s", nomeFicheiro);
+
+    ficheiro = fopen(nomeFicheiro, "r");
     if (ficheiro == NULL)
     {
         printf("Erro ao abrir o ficheiro.\n");
         return 1;
     }
 
-    int largura, altura;
-    if(fscanf(ficheiro, "%d %d", &largura, &altura) != 2)
+    while (fgets(linha, sizeof(linha), ficheiro) != NULL)
     {
-        printf("Erro ao ler as dimensões da imagem.\n");
-        fclose(ficheiro);
-        return 1;
+        char *comentario = strchr(linha, '#');
+        if (comentario != NULL)
+        {
+            *comentario = '\0';
+        }
+
+        if (sscanf(linha, "%d %d", &largura, &altura) == 2)
+        {
+            break;
+        }
     }
+
     if (largura <= 0 || largura > MAX_LARGURA || altura <= 0 || altura > MAX_ALTURA)
     {
-        printf("Dimensões da imagem inválidas. Largura e altura devem ser entre 1 e %d.\n", MAX_LARGURA);
+        printf("Dimensões da imagem inválidas.\n");
         fclose(ficheiro);
         return 1;
     }
+
     iniciarImagem(&img, largura, altura);
 
-    char tipoDesenho[20];
-
-    while (fscanf(ficheiro, "%s", tipoDesenho) != EOF)
+    while (fgets(linha, sizeof(linha), ficheiro) != NULL)
     {
-        if (strcmp(tipoDesenho, "p") == 0){
-            int x, y;
-            fscanf(ficheiro, "%d %d", &x, &y);
-            desenharPontos(&img, x, y);
+        char *comentario = strchr(linha, '#');
+        if (comentario != NULL)
+        {
+            *comentario = '\0';
         }
-        else if (strcmp(tipoDesenho, "l") == 0){
-            int x1, y1, x2, y2;
-            fscanf(ficheiro, "%d %d %d %d", &x1, &y1, &x2, &y2);
-            desenharLinha(&img, x1, y1, x2, y2);
+
+        char *comando = strtok(linha, " \t\n\r");
+        if (comando == NULL)
+        {
+            continue;
         }
-        else if (strcmp(tipoDesenho, "r") == 0){
-            int x1, y1, x2, y2;
-            fscanf(ficheiro, "%d %d %d %d", &x1, &y1, &x2, &y2);
-            desenharRetangulo(&img, x1, y1, x2, y2);
+
+        if (strcmp(comando, "p") == 0)
+        {
+            char *sx = strtok(NULL, " \t\n\r");
+            char *sy = strtok(NULL, " \t\n\r");
+
+            if (sx != NULL && sy != NULL)
+            {
+                int x = atoi(sx);
+                int y = atoi(sy);
+                desenharPontos(&img, x, y);
+            }
+        }
+        else if (strcmp(comando, "l") == 0)
+        {
+            char *sx1 = strtok(NULL, " \t\n\r");
+            char *sy1 = strtok(NULL, " \t\n\r");
+            char *sx2 = strtok(NULL, " \t\n\r");
+            char *sy2 = strtok(NULL, " \t\n\r");
+
+            if (sx1 != NULL && sy1 != NULL && sx2 != NULL && sy2 != NULL)
+            {
+                int x1 = atoi(sx1);
+                int y1 = atoi(sy1);
+                int x2 = atoi(sx2);
+                int y2 = atoi(sy2);
+                desenharLinha(&img, x1, y1, x2, y2);
+            }
+        }
+        else if (strcmp(comando, "r") == 0)
+        {
+            char *sx1 = strtok(NULL, " \t\n\r");
+            char *sy1 = strtok(NULL, " \t\n\r");
+            char *sx2 = strtok(NULL, " \t\n\r");
+            char *sy2 = strtok(NULL, " \t\n\r");
+
+            if (sx1 != NULL && sy1 != NULL && sx2 != NULL && sy2 != NULL)
+            {
+                int x1 = atoi(sx1);
+                int y1 = atoi(sy1);
+                int x2 = atoi(sx2);
+                int y2 = atoi(sy2);
+                desenharRetangulo(&img, x1, y1, x2, y2);
+            }
+        }
+        else if (strcmp(comando, "z") == 0)
+        {
+            int xs[50], ys[50];
+            int n = 0;
+
+            char *sx = strtok(NULL, " \t\n\r");
+            while (sx != NULL && n < 50)
+            {
+                char *sy = strtok(NULL, " \t\n\r");
+                if (sy == NULL)
+                {
+                    break;
+                }
+
+                xs[n] = atoi(sx);
+                ys[n] = atoi(sy);
+                n++;
+
+                sx = strtok(NULL, " \t\n\r");
+            }
+
+            if (n >= 2)
+            {
+                desenharPoligono(&img, xs, ys, n);
+            }
+        }
+        else if (strcmp(comando, "f") == 0)
+        {
+            char *sx = strtok(NULL, " \t\n\r");
+            char *sy = strtok(NULL, " \t\n\r");
+            char *nomeInserir = strtok(NULL, " \t\n\r");
+
+            if (sx != NULL && sy != NULL && nomeInserir != NULL)
+            {
+                int x = atoi(sx);
+                int y = atoi(sy);
+                inserirImagem(&img, x, y, nomeInserir);
+            }
+        }
+        else
+        {
+            printf("Tipo de desenho desconhecido: %s\n", comando);
         }
     }
+
     fclose(ficheiro);
     guardarImagem(&img, largura, altura, "output.txt");
+
     return 0;
 }
