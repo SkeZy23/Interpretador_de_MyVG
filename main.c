@@ -1,6 +1,3 @@
-/*Este trabalho foi integralmente
-realizado pelos alunos Rodrigo Lopes e António Santos sem recurso a ferramentas de inteligência artificial*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
